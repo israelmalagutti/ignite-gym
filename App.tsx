@@ -1,5 +1,5 @@
-import { StatusBar, Text, View } from "react-native";
-import { NativeBaseProvider } from "native-base";
+import { StatusBar, Text } from "react-native";
+import { Box, NativeBaseProvider } from "native-base";
 
 import {
   useFonts,
@@ -7,19 +7,24 @@ import {
   Roboto_700Bold,
 } from "@expo-google-fonts/roboto";
 
+import { THEME } from "./src/theme";
+
+import { Loading } from "@components/Loading";
+
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold });
 
-  if (fontsLoaded)
-    return (
-      <NativeBaseProvider>
-        <StatusBar
-          backgroundColor="#202024"
-          translucent
-          barStyle="light-content"
-        />
+  return (
+    <NativeBaseProvider theme={THEME}>
+      <StatusBar
+        backgroundColor="#202024"
+        translucent
+        barStyle="light-content"
+      />
 
-        {fontsLoaded ? <Text>Hello World!</Text> : <View />}
-      </NativeBaseProvider>
-    );
+      <Box flex={1} bgColor="gray.600">
+        {!fontsLoaded ? <Text>Hello World!</Text> : <Loading />}
+      </Box>
+    </NativeBaseProvider>
+  );
 }
