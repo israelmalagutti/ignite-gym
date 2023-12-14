@@ -1,5 +1,4 @@
-import { StatusBar } from "expo-status-bar";
-import { Text, View } from "react-native";
+import { StatusBar, Text, View } from "react-native";
 
 import {
   useFonts,
@@ -12,9 +11,21 @@ export default function App() {
 
   if (fontsLoaded)
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#202024",
+        }}
+      >
         {fontsLoaded ? <Text>Hello World!</Text> : <View />}
-        <StatusBar style="auto" />
+
+        <StatusBar
+          backgroundColor="#202024"
+          translucent
+          barStyle="light-content"
+        />
       </View>
     );
 }
