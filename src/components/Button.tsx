@@ -2,9 +2,10 @@ import { IButtonProps, Button as NBButton, Text } from "native-base";
 
 type ButtonProps = IButtonProps & {
   title: string;
+  variant?: "solid" | "outline";
 };
 
-export const Button = ({ title, variant, ...rest }: ButtonProps) => {
+export const Button = ({ title, variant = "solid", ...rest }: ButtonProps) => {
   const variantOutline = variant === "outline";
 
   return (
@@ -17,15 +18,14 @@ export const Button = ({ title, variant, ...rest }: ButtonProps) => {
       borderColor={variantOutline ? "green.700" : "transparent"}
       rounded="md"
       _pressed={{
-        bg: "green.500",
+        bg: variantOutline ? "#ffffff08" : "green.500",
       }}
       {...rest}
     >
       <Text
         color={variantOutline ? "green.700" : "white"}
-        fontFamily="body"
-        fontSize="md"
-        fontWeight="bold"
+        fontFamily="heading"
+        fontSize="sm"
       >
         {title}
       </Text>

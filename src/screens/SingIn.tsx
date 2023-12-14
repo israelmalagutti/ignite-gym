@@ -4,6 +4,7 @@ import { Input } from "@components/Input";
 
 import BackgroundImg from "@assets/background.png";
 import LogoSvg from "@assets/logo.svg";
+import { Button } from "@components/index";
 
 export function SignIn() {
   return (
@@ -22,7 +23,7 @@ export function SignIn() {
         </Text>
       </Center>
 
-      <Center width="100%" gap={4}>
+      <Center flex={1} width="100%" gap={4}>
         <Heading color="gray.100" fontSize="xl" mb={6}>
           Acesse sua conta
         </Heading>
@@ -35,7 +36,17 @@ export function SignIn() {
           />
 
           <Input placeholder="Password" secureTextEntry />
+
+          <Button title="Log in" />
         </Box>
+      </Center>
+
+      <Center width="100%" gap={3} px={10} pb={8}>
+        <Text color="gray.100" fontSize="sm" fontFamily="body">
+          Ainda não tem uma conta?
+        </Text>
+
+        <Button title="Create account" variant="outline" />
       </Center>
     </VStack>
   );
