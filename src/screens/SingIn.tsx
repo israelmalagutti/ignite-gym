@@ -1,4 +1,12 @@
-import { Box, Center, Heading, Image, Text, VStack } from "native-base";
+import {
+  Box,
+  Center,
+  Heading,
+  Image,
+  ScrollView,
+  Text,
+  VStack,
+} from "native-base";
 
 import { Input } from "@components/Input";
 
@@ -8,46 +16,48 @@ import { Button } from "@components/index";
 
 export function SignIn() {
   return (
-    <VStack flex={1}>
-      <Image
-        resizeMode="contain"
-        position={"absolute"}
-        source={BackgroundImg}
-        alt="People working out"
-      />
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <VStack flex={1} justifyContent="space-between" py={8} px={10}>
+        <Image
+          resizeMode="contain"
+          position={"absolute"}
+          source={BackgroundImg}
+          alt="People working out"
+        />
 
-      <Center my={24}>
-        <LogoSvg />
-        <Text fontSize="sm" color="gray.100">
-          Train your mind and your body
-        </Text>
-      </Center>
+        <Center>
+          <LogoSvg />
+          <Text fontSize="sm" color="gray.100">
+            Train your mind and your body
+          </Text>
+        </Center>
 
-      <Center flex={1} width="100%" gap={4}>
-        <Heading color="gray.100" fontSize="xl" mb={6}>
-          Acesse sua conta
-        </Heading>
+        <Center width="100%" gap={4}>
+          <Heading color="gray.100" fontSize="xl" mb={6}>
+            Acesse sua conta
+          </Heading>
 
-        <Box width="100%" gap={4} px={10}>
-          <Input
-            placeholder="E-mail"
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
+          <Box width="100%" gap={4}>
+            <Input
+              placeholder="E-mail"
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
 
-          <Input placeholder="Password" secureTextEntry />
+            <Input placeholder="Password" secureTextEntry />
 
-          <Button title="Log in" />
-        </Box>
-      </Center>
+            <Button title="Log in" />
+          </Box>
+        </Center>
 
-      <Center width="100%" gap={3} px={10} pb={8}>
-        <Text color="gray.100" fontSize="sm" fontFamily="body">
-          Ainda não tem uma conta?
-        </Text>
+        <Center width="100%" gap={3}>
+          <Text color="gray.100" fontSize="sm" fontFamily="body">
+            Ainda não tem uma conta?
+          </Text>
 
-        <Button title="Create account" variant="outline" />
-      </Center>
-    </VStack>
+          <Button title="Create account" variant="outline" />
+        </Center>
+      </VStack>
+    </ScrollView>
   );
 }
