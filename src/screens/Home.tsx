@@ -1,14 +1,16 @@
 import { useNavigation } from "@react-navigation/native";
 
-import { Center, Text } from "native-base";
-// import {} from "@components/index";
+import { Center, Text, VStack } from "native-base";
+import { HomeHeader } from "@components/index";
 
 // import {} from "";
 
 export function Home() {
   return (
-    <Center>
-      <Text>Hello Home</Text>
-    </Center>
+    <VStack flex={1}>
+      <HomeHeader />
+
+      <Text color="gray.100">Hello Home</Text>
+    </VStack>
   );
 }
