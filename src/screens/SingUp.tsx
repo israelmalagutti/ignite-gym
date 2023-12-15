@@ -16,14 +16,14 @@ import { Button, Input } from "@components/index";
 import BackgroundImg from "@assets/background.png";
 import LogoSvg from "@assets/logo.svg";
 
-export function SignIn() {
+export function SignUp() {
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
 
-  const handleSignUp = () => {
-    navigation.navigate("signUp");
+  const handleSignIn = () => {
+    navigation.goBack();
   };
 
-  const submitSignIn = () => {};
+  const submitSignUp = () => {};
 
   return (
     <ScrollView
@@ -47,10 +47,15 @@ export function SignIn() {
 
         <Center width="100%" gap={4}>
           <Heading color="gray.100" fontSize="xl" mb={6}>
-            Log In
+            Create your account
           </Heading>
 
           <Box width="100%" gap={4}>
+            <Input
+              placeholder="Name"
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
             <Input
               placeholder="E-mail"
               keyboardType="email-address"
@@ -59,21 +64,11 @@ export function SignIn() {
 
             <Input placeholder="Password" secureTextEntry />
 
-            <Button title="Log in" onPress={submitSignIn} />
+            <Button title="Sign up" onPress={submitSignUp} />
           </Box>
         </Center>
 
-        <Center width="100%" gap={3}>
-          <Text color="gray.100" fontSize="sm" fontFamily="body">
-            Ainda não tem uma conta?
-          </Text>
-
-          <Button
-            title="Create account"
-            variant="outline"
-            onPress={handleSignUp}
-          />
-        </Center>
+        <Button title="Log in" variant="outline" onPress={handleSignIn} />
       </VStack>
     </ScrollView>
   );
