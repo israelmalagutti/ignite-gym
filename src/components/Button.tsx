@@ -23,6 +23,7 @@ export const Button = ({ title, variant = "solid", ...rest }: ButtonProps) => {
       {...rest}
     >
       <Text
+        textAlign="center"
         color={variantOutline ? "green.700" : "white"}
         fontFamily="heading"
         fontSize="sm"
