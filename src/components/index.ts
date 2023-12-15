@@ -1,6 +1,7 @@
 export * from "./Button";
 export * from "./ExerciseCard";
 export * from "./Group";
+export * from "./HistoryCard";
 export * from "./HomeHeader";
 export * from "./Input";
 export * from "./Loading";
