@@ -1,14 +1,16 @@
 import { useNavigation } from "@react-navigation/native";
 
-import { Center, Text } from "native-base";
-// import {} from "@components/index";
-
-// import {} from "";
+import { Center, Text, VStack } from "native-base";
+import { ScreenHeader } from "@components/index";
 
 export function History() {
   return (
-    <Center>
-      <Text>Hello History</Text>
-    </Center>
+    <VStack flex={1}>
+      <ScreenHeader title="Exercise history" />
+
+      <Center>
+        <Text>Hello History</Text>
+      </Center>
+    </VStack>
   );
 }
