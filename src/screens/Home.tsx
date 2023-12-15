@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { AppNavigatorRoutesProps } from "@routes/app.routes";
 
-import { FlatList, VStack } from "native-base";
+import { FlatList, HStack, Heading, Text, VStack } from "native-base";
 import { Group, HomeHeader } from "@components/index";
 
 type MuscleGroup =
@@ -42,7 +42,14 @@ export function Home() {
 
       <FlatList
         horizontal
-        contentContainerStyle={{ gap: 12, paddingHorizontal: 32 }}
+        showsHorizontalScrollIndicator={false}
+        my={10}
+        maxH={12}
+        _contentContainerStyle={{
+          alignItems: "center",
+          gap: 3,
+          px: 8,
+        }}
         data={EXERCISE_TYPES}
         keyExtractor={item => item}
         renderItem={({ item }) => (
@@ -53,6 +60,15 @@ export function Home() {
           />
         )}
       />
+
+      <HStack justifyContent="space-between" px={8}>
+        <Heading color={"gray.200"} fontSize={"sm"}>
+          Exercises
+        </Heading>
+        <Text color={"gray.200"} fontSize={"sm"}>
+          4
+        </Text>
+      </HStack>
     </VStack>
   );
 }
