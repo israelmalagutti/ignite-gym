@@ -6,7 +6,7 @@ import { UserPhoto } from "./UserPhoto";
 
 export function HomeHeader() {
   return (
-    <HStack pt={16} pb={5} px={8} alignItems="center">
+    <HStack pt={16} pb={5} px={8} alignItems="center" bg="gray.600">
       <UserPhoto
         source={{ uri: "https://github.com/israelmalagutti.png" }}
         size={16}
