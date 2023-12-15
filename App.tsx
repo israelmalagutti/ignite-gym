@@ -9,9 +9,9 @@ import {
 
 import { THEME } from "./src/theme";
 
-import { Loading } from "@components/Loading";
+import { Routes } from "@routes/index";
 
-import { SignIn } from "@screens/SingIn";
+import { Loading } from "@components/Loading";
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold });
@@ -24,9 +24,7 @@ export default function App() {
         barStyle="light-content"
       />
 
-      <Box flex={1} bgColor="gray.600">
-        {fontsLoaded ? <SignIn /> : <Loading />}
-      </Box>
+      {fontsLoaded ? <Routes /> : <Loading />}
     </NativeBaseProvider>
   );
 }
