@@ -1,4 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
+
+import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
+
+import { Button, Input } from "@components/index";
 import {
   Box,
   Center,
@@ -8,10 +12,6 @@ import {
   Text,
   VStack,
 } from "native-base";
-
-import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
-
-import { Button, Input } from "@components/index";
 
 import BackgroundImg from "@assets/background.png";
 import LogoSvg from "@assets/logo.svg";
