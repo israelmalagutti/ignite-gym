@@ -35,6 +35,7 @@ export function SignIn() {
           resizeMode="contain"
           position={"absolute"}
           source={BackgroundImg}
+          defaultSource={BackgroundImg}
           alt="People working out"
         />
 
