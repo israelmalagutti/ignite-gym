@@ -23,6 +23,7 @@ export function Group({ name, isActive, ...rest }: GroupProps) {
       }}
     >
       <Text
+        textAlign="center"
         color={isActive ? "green.500" : "gray.200"}
         fontSize="xs"
         fontFamily="heading"
