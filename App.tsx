@@ -1,4 +1,7 @@
-import { StatusBar, Text } from "react-native";
+import { useEffect } from "react";
+import { StatusBar } from "react-native";
+import * as NavigationBar from "expo-navigation-bar";
+
 import { NativeBaseProvider } from "native-base";
 
 import {
@@ -15,6 +18,13 @@ import { Loading } from "@components/Loading";
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold });
+
+  const changeNavigationBarColor = async () =>
+    await NavigationBar.setBackgroundColorAsync(THEME.colors.gray[600]);
+
+  useEffect(() => {
+    changeNavigationBarColor();
+  }, []);
 
   return (
     <NativeBaseProvider theme={THEME}>
