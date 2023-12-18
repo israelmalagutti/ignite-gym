@@ -6,7 +6,7 @@ import {
 import { useTheme } from "native-base";
 
 import { Exercise } from "@screens/Exercise";
-import { Home } from "@screens/Home";
+import { type Exercise as ExerciseType, Home } from "@screens/Home";
 import { History } from "@screens/History";
 import { Profile } from "@screens/Profile";
 
@@ -18,7 +18,7 @@ import { Platform } from "react-native";
 
 type AppRoutes = {
   home: undefined;
-  exercise: undefined;
+  exercise: { exercise: ExerciseType };
   history: undefined;
   profile: undefined;
 };
