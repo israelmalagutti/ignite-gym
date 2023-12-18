@@ -25,7 +25,7 @@ export function ExerciseCard({ name, sets, reps, ...rest }: ExerciseCardProps) {
           mr={4}
           bg="gray.600"
           rounded="md"
-          resizeMode="center"
+          resizeMode="cover"
         />
 
         <VStack flex={1} style={{ gap: 2 }}>

@@ -17,8 +17,9 @@ export function HistoryCard({ group, name, time }: HistoryCardProps) {
       bg="gray.600"
       rounded="lg"
     >
-      <VStack>
+      <VStack flex={1}>
         <Heading
+          numberOfLines={1}
           color="white"
           fontSize="md"
           fontFamily="heading"
@@ -29,10 +30,10 @@ export function HistoryCard({ group, name, time }: HistoryCardProps) {
         </Heading>
 
         <Text
+          numberOfLines={1}
           color="gray.100"
           fontSize="lg"
           fontFamily="body"
-          numberOfLines={1}
         >
           {name}
         </Text>
