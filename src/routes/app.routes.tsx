@@ -1,20 +1,20 @@
+import { Platform } from "react-native";
 import {
   BottomTabNavigationProp,
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
-
-import { useTheme } from "native-base";
 
 import { Exercise } from "@screens/Exercise";
 import { type Exercise as ExerciseType, Home } from "@screens/Home";
 import { History } from "@screens/History";
 import { Profile } from "@screens/Profile";
 
+import { View, useTheme } from "native-base";
+
 // Assets
 import HistorySvg from "@assets/history.svg";
 import HomeSvg from "@assets/home.svg";
 import ProfileSvg from "@assets/profile.svg";
-import { Platform } from "react-native";
 
 type AppRoutes = {
   home: undefined;
@@ -54,7 +54,9 @@ export function AppRoutes() {
         component={Home}
         options={{
           tabBarIcon: ({ color }) => (
-            <HomeSvg fill={color} width={iconSize} height={iconSize} />
+            <View alignSelf="center">
+              <HomeSvg fill={color} width={iconSize} height={iconSize} />
+            </View>
           ),
         }}
       />
@@ -64,7 +66,9 @@ export function AppRoutes() {
         component={History}
         options={{
           tabBarIcon: ({ color }) => (
-            <HistorySvg fill={color} width={iconSize} height={iconSize} />
+            <View alignSelf="center">
+              <HistorySvg fill={color} width={iconSize} height={iconSize} />
+            </View>
           ),
         }}
       />
@@ -74,7 +78,9 @@ export function AppRoutes() {
         component={Profile}
         options={{
           tabBarIcon: ({ color }) => (
-            <ProfileSvg fill={color} width={iconSize} height={iconSize} />
+            <View alignSelf="center">
+              <ProfileSvg fill={color} width={iconSize} height={iconSize} />
+            </View>
           ),
         }}
       />
