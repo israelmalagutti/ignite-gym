@@ -72,24 +72,6 @@ export function Exercise() {
             h={80}
             rounded="lg"
           />
-          <Image
-            resizeMode="cover"
-            source={{ uri: "" }}
-            alt="Exercise name"
-            bg="gray.600"
-            w="full"
-            h={80}
-            rounded="lg"
-          />
-          <Image
-            resizeMode="cover"
-            source={{ uri: "" }}
-            alt="Exercise name"
-            bg="gray.600"
-            w="full"
-            h={80}
-            rounded="lg"
-          />
 
           <Box
             w="full"

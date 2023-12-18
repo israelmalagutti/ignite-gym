@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { TouchableOpacity } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 
 import { Button, Input, ScreenHeader, UserPhoto } from "@components/index";
 import {
@@ -8,13 +11,56 @@ import {
   Skeleton,
   Text,
   VStack,
+  useToast,
 } from "native-base";
-import { TouchableOpacity } from "react-native";
 
 const PHOTO_SIZE = 33;
 
+const TOAST_DURATION_IN_MS = 3000;
+
 export function Profile() {
+  const [userPhoto, setUserPhoto] = useState(
+    "https://github.com/israelmalagutti.png"
+  );
   const [photoLoading, setPhotoLoading] = useState(true);
+
+  const toast = useToast();
+
+  const handleUserPhotoSelect = async () => {
+    setPhotoLoading(true);
+
+    try {
+      const selectedPhoto = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+        aspect: [4, 4],
+        allowsEditing: true,
+      });
+
+      if (selectedPhoto.canceled) return;
+
+      if (selectedPhoto.assets[0].uri) {
+        const photoInfo = await FileSystem.getInfoAsync(
+          selectedPhoto.assets[0].uri,
+          { size: true }
+        );
+
+        if (photoInfo.exists && photoInfo.size / 1024 / 1024 > 5)
+          return toast.show({
+            placement: "top",
+            duration: TOAST_DURATION_IN_MS,
+            title: "This image is too big. Choose an image up to 5MB",
+            bg: "red.600",
+          });
+
+        setUserPhoto(selectedPhoto.assets[0].uri);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setPhotoLoading(false);
+    }
+  };
 
   return (
     <VStack flex={1}>
@@ -36,7 +82,9 @@ export function Profile() {
             />
           ) : (
             <UserPhoto
-              source={{ uri: "https://github.com/israelmalagutti.png" }}
+              source={{
+                uri: userPhoto,
+              }}
               size={PHOTO_SIZE}
             />
           )}
@@ -47,6 +95,7 @@ export function Profile() {
               fontSize="md"
               fontFamily="heading"
               fontWeight="bold"
+              onPress={handleUserPhotoSelect}
             >
               Update photo
             </Text>
