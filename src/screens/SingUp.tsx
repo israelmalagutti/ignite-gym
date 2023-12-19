@@ -2,6 +2,10 @@ import { useNavigation } from "@react-navigation/native";
 
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
 
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
 import { Button, Input } from "@components/index";
 import {
   Box,
@@ -16,14 +20,46 @@ import {
 import BackgroundImg from "@assets/background.png";
 import LogoSvg from "@assets/logo.svg";
 
+type FormDataProps = {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
+const signUpSchema = z
+  .object({
+    name: z.string({ required_error: "The name is required." }),
+    email: z
+      .string({ required_error: "The email is required." })
+      .email("Invalid email."),
+    password: z
+      .string({ required_error: "The password is required." })
+      .min(6, "The password must have at least 6 digits"),
+    confirmPassword: z.string({
+      required_error: "You must confirm your password to continue.",
+    }),
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: "The passwords must match.",
+    path: ["confirmPassword"],
+  });
+
 export function SignUp() {
+  const { control, handleSubmit, formState } = useForm<FormDataProps>({
+    resolver: zodResolver(signUpSchema),
+  });
+
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
 
   const handleSignIn = () => {
     navigation.goBack();
   };
 
-  const submitSignUp = () => {};
+  const handleSignUp = (data: FormDataProps) => {
+    try {
+    } catch (error) {}
+  };
 
   return (
     <ScrollView
@@ -52,20 +88,67 @@ export function SignUp() {
           </Heading>
 
           <Box width="100%" gap={4}>
-            <Input
-              placeholder="Name"
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-            <Input
-              placeholder="E-mail"
-              keyboardType="email-address"
-              autoCapitalize="none"
+            <Controller
+              control={control}
+              name="name"
+              render={({ field }) => (
+                <Input
+                  placeholder="Name"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  value={field.value}
+                  onChangeText={field.onChange}
+                  errorMessage={formState.errors.name?.message}
+                />
+              )}
             />
 
-            <Input placeholder="Password" secureTextEntry />
+            <Controller
+              control={control}
+              name="email"
+              render={({ field }) => (
+                <Input
+                  placeholder="E-mail"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  value={field.value}
+                  onChangeText={field.onChange}
+                  errorMessage={formState.errors.email?.message}
+                />
+              )}
+            />
 
-            <Button title="Sign up" onPress={submitSignUp} />
+            <Controller
+              control={control}
+              name="password"
+              render={({ field }) => (
+                <Input
+                  placeholder="Password"
+                  secureTextEntry
+                  value={field.value}
+                  onChangeText={field.onChange}
+                  errorMessage={formState.errors.password?.message}
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <Input
+                  placeholder="Confirm password"
+                  secureTextEntry
+                  value={field.value}
+                  onChangeText={field.onChange}
+                  errorMessage={formState.errors.confirmPassword?.message}
+                  returnKeyType="send"
+                  onSubmitEditing={handleSubmit(handleSignUp)}
+                />
+              )}
+            />
+
+            <Button title="Sign up" onPress={handleSubmit(handleSignUp)} />
           </Box>
         </Center>
 
