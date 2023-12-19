@@ -16,7 +16,7 @@ import {
 
 const PHOTO_SIZE = 33;
 
-const TOAST_DURATION_IN_MS = 3000;
+const TOAST_DURATION_IN_MS = 2500;
 
 export function Profile() {
   const [userPhoto, setUserPhoto] = useState(
