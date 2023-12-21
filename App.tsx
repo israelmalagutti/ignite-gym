@@ -16,6 +16,8 @@ import { Routes } from "@routes/index";
 
 import { Loading } from "@components/Loading";
 
+import { AuthContext } from "@contexts/index";
+
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold });
 
@@ -34,7 +36,18 @@ export default function App() {
         barStyle="light-content"
       />
 
-      {fontsLoaded ? <Routes /> : <Loading />}
+      <AuthContext.Provider
+        value={{
+          user: {
+            id: "1",
+            name: "Israel",
+            email: "example@example.com",
+            avatar: "israel.png",
+          },
+        }}
+      >
+        {fontsLoaded ? <Routes /> : <Loading />}
+      </AuthContext.Provider>
     </NativeBaseProvider>
   );
 }
