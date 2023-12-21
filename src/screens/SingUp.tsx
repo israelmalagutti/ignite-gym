@@ -6,6 +6,8 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
+import { api } from "@services/api";
+
 import { Button, Input } from "@components/index";
 import {
   Box,
@@ -15,10 +17,12 @@ import {
   ScrollView,
   Text,
   VStack,
+  useToast,
 } from "native-base";
 
 import BackgroundImg from "@assets/background.png";
 import LogoSvg from "@assets/logo.svg";
+import { AppError } from "@utils/AppError";
 
 type FormDataProps = {
   name: string;
@@ -45,7 +49,11 @@ const signUpSchema = z
     path: ["confirmPassword"],
   });
 
+const TOAST_DURATION_MS = 2500;
+
 export function SignUp() {
+  const Toast = useToast();
+
   const { control, handleSubmit, formState } = useForm<FormDataProps>({
     resolver: zodResolver(signUpSchema),
   });
@@ -56,9 +64,24 @@ export function SignUp() {
     navigation.goBack();
   };
 
-  const handleSignUp = (data: FormDataProps) => {
+  const handleSignUp = async ({ email, name, password }: FormDataProps) => {
     try {
-    } catch (error) {}
+      const response = await api.post("/userssada", { email, name, password });
+      console.log(response);
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError
+        ? error.message
+        : "We couldn't create your account. Please try again later.";
+
+      isAppError &&
+        Toast.show({
+          placement: "top",
+          duration: TOAST_DURATION_MS,
+          title,
+          bg: "red.600",
+        });
+    }
   };
 
   return (

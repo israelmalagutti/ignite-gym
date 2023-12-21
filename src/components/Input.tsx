@@ -13,7 +13,6 @@ export function Input({ errorMessage = null, isInvalid, ...rest }: InputProps) {
   const { colors } = useTheme();
 
   const invalid = !!errorMessage || isInvalid;
-  console.log(invalid);
 
   return (
     <FormControl isInvalid={invalid}>
