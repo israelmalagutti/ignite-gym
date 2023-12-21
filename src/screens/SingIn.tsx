@@ -2,6 +2,10 @@ import { useNavigation } from "@react-navigation/native";
 
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
 
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
 import { Button, Input } from "@components/index";
 import {
   Box,
@@ -15,15 +19,34 @@ import {
 
 import BackgroundImg from "@assets/background.png";
 import LogoSvg from "@assets/logo.svg";
+import { api } from "@services/api";
+
+type FormData = {
+  email: string;
+  password: string;
+};
+
+const signInSchema = z.object({
+  email: z
+    .string({ required_error: "This field is required." })
+    .email("Invalid email."),
+  password: z.string({ required_error: "This field is required." }),
+});
 
 export function SignIn() {
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
+
+  const { control, formState, handleSubmit } = useForm<FormData>({
+    resolver: zodResolver(signInSchema),
+  });
 
   const handleSignUp = () => {
     navigation.navigate("signUp");
   };
 
-  const submitSignIn = () => {};
+  const submitSignIn = async ({ email, password }: FormData) => {
+    console.log(email, password);
+  };
 
   return (
     <ScrollView
@@ -52,15 +75,38 @@ export function SignIn() {
           </Heading>
 
           <Box width="100%" gap={4}>
-            <Input
-              placeholder="E-mail"
-              keyboardType="email-address"
-              autoCapitalize="none"
+            <Controller
+              control={control}
+              name="email"
+              render={({ field }) => (
+                <Input
+                  placeholder="E-mail"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  value={field.value}
+                  onChangeText={field.onChange}
+                  errorMessage={formState.errors.email?.message}
+                />
+              )}
             />
 
-            <Input placeholder="Password" secureTextEntry />
+            <Controller
+              control={control}
+              name="password"
+              render={({ field }) => (
+                <Input
+                  placeholder="Password"
+                  secureTextEntry
+                  value={field.value}
+                  onChangeText={field.onChange}
+                  errorMessage={formState.errors.password?.message}
+                  returnKeyType="send"
+                  onSubmitEditing={handleSubmit(submitSignIn)}
+                />
+              )}
+            />
 
-            <Button title="Log in" onPress={submitSignIn} />
+            <Button title="Log in" onPress={handleSubmit(submitSignIn)} />
           </Box>
         </Center>
 

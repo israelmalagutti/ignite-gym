@@ -66,7 +66,7 @@ export function SignUp() {
 
   const handleSignUp = async ({ email, name, password }: FormDataProps) => {
     try {
-      const response = await api.post("/userssada", { email, name, password });
+      const response = await api.post("/users", { email, name, password });
       console.log(response);
     } catch (error) {
       const isAppError = error instanceof AppError;
