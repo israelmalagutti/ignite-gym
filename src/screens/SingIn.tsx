@@ -23,6 +23,7 @@ import {
 import BackgroundImg from "@assets/background.png";
 import LogoSvg from "@assets/logo.svg";
 import { AppError } from "@utils/AppError";
+import { useState } from "react";
 
 type FormData = {
   email: string;
@@ -39,6 +40,8 @@ const signInSchema = z.object({
 const TOAST_DURATION = 2500;
 
 export function SignIn() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const Toast = useToast();
 
   const { signIn } = useAuth();
@@ -55,12 +58,16 @@ export function SignIn() {
 
   const submitSignIn = async ({ email, password }: FormData) => {
     try {
+      setIsLoading(true);
+
       await signIn(email, password);
     } catch (error) {
       const isAppError = error instanceof AppError;
       const title = isAppError
         ? error.message
         : "Sorry, we couldn't contact our servers. Try again later.";
+
+      setIsLoading(false);
 
       if (isAppError)
         Toast.show({
@@ -130,7 +137,11 @@ export function SignIn() {
               )}
             />
 
-            <Button title="Log in" onPress={handleSubmit(submitSignIn)} />
+            <Button
+              title="Log in"
+              onPress={handleSubmit(submitSignIn)}
+              isLoading={isLoading}
+            />
           </Box>
         </Center>
 
