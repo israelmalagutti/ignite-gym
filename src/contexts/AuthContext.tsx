@@ -1,8 +1,9 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 import { UserDTO } from "@dtos/index";
 import { api } from "@services/api";
-import { saveUser } from "@storage/storageUser";
+
+import { getUser, saveUser } from "@storage/storageUser";
 
 export type AuthContextDataProps = {
   user: UserDTO;
@@ -33,7 +34,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-  console.log({ user });
+  const loadUserData = async () => {
+    const loggedUser = await getUser();
+
+    if (loggedUser) setUser(loggedUser);
+  };
+
+  useEffect(() => {
+    loadUserData();
+  }, []);
 
   return (
     <AuthContext.Provider

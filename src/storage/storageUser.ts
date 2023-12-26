@@ -10,3 +10,10 @@ export const saveUser = async (user: UserDTO) => {
     throw error;
   }
 };
+
+export const getUser = async () => {
+  const storedUser = await AsyncStorage.getItem(USER_STORAGE);
+
+  const user: UserDTO = storedUser ? JSON.parse(storedUser) : {};
+  return user;
+};
