@@ -17,10 +17,12 @@ import {
   ScrollView,
   Text,
   VStack,
+  useToast,
 } from "native-base";
 
 import BackgroundImg from "@assets/background.png";
 import LogoSvg from "@assets/logo.svg";
+import { AppError } from "@utils/AppError";
 
 type FormData = {
   email: string;
@@ -34,7 +36,11 @@ const signInSchema = z.object({
   password: z.string({ required_error: "This field is required." }),
 });
 
+const TOAST_DURATION = 2500;
+
 export function SignIn() {
+  const Toast = useToast();
+
   const { signIn } = useAuth();
 
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
@@ -51,7 +57,18 @@ export function SignIn() {
     try {
       await signIn(email, password);
     } catch (error) {
-      console.log(error);
+      const isAppError = error instanceof AppError;
+      const title = isAppError
+        ? error.message
+        : "Sorry, we couldn't contact our servers. Try again later.";
+
+      if (isAppError)
+        Toast.show({
+          placement: "top",
+          duration: TOAST_DURATION,
+          title,
+          bg: "red.500",
+        });
     }
   };
 
