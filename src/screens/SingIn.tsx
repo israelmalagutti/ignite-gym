@@ -2,6 +2,8 @@ import { useNavigation } from "@react-navigation/native";
 
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
 
+import { useAuth } from "@hooks/useAuth";
+
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -19,7 +21,6 @@ import {
 
 import BackgroundImg from "@assets/background.png";
 import LogoSvg from "@assets/logo.svg";
-import { api } from "@services/api";
 
 type FormData = {
   email: string;
@@ -34,6 +35,8 @@ const signInSchema = z.object({
 });
 
 export function SignIn() {
+  const { signIn } = useAuth();
+
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
 
   const { control, formState, handleSubmit } = useForm<FormData>({
@@ -45,7 +48,11 @@ export function SignIn() {
   };
 
   const submitSignIn = async ({ email, password }: FormData) => {
-    console.log(email, password);
+    try {
+      await signIn(email, password);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

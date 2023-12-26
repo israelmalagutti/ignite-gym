@@ -68,6 +68,8 @@ export function SignUp() {
     try {
       const response = await api.post("/users", { email, name, password });
       console.log(response);
+
+      navigation.navigate("signIn");
     } catch (error) {
       const isAppError = error instanceof AppError;
       const title = isAppError
