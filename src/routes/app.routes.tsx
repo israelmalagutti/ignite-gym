@@ -54,9 +54,7 @@ export function AppRoutes() {
         component={Home}
         options={{
           tabBarIcon: ({ color }) => (
-            <View alignSelf="center">
-              <HomeSvg fill={color} width={iconSize} height={iconSize} />
-            </View>
+            <HomeSvg fill={color} width={iconSize} height={iconSize} />
           ),
         }}
       />
@@ -66,9 +64,7 @@ export function AppRoutes() {
         component={History}
         options={{
           tabBarIcon: ({ color }) => (
-            <View alignSelf="center">
-              <HistorySvg fill={color} width={iconSize} height={iconSize} />
-            </View>
+            <HistorySvg fill={color} width={iconSize} height={iconSize} />
           ),
         }}
       />
@@ -78,9 +74,7 @@ export function AppRoutes() {
         component={Profile}
         options={{
           tabBarIcon: ({ color }) => (
-            <View alignSelf="center">
-              <ProfileSvg fill={color} width={iconSize} height={iconSize} />
-            </View>
+            <ProfileSvg fill={color} width={iconSize} height={iconSize} />
           ),
         }}
       />

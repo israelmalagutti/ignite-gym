@@ -7,7 +7,10 @@ import { getUser, saveUser } from "@storage/storageUser";
 
 export type AuthContextDataProps = {
   user: UserDTO;
+
   signIn: (email: string, password: string) => Promise<void>;
+
+  isLoadingStoredUser: boolean;
 };
 
 type AuthProviderProps = {
@@ -20,6 +23,7 @@ export const AuthContext = createContext<AuthContextDataProps>({
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState({} as UserDTO);
+  const [isLoadingStoredUser, setIsLoadingStoredUser] = useState(true);
 
   const signIn = async (email: string, password: string) => {
     try {
@@ -35,9 +39,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const loadUserData = async () => {
-    const loggedUser = await getUser();
+    try {
+      const loggedUser = await getUser();
 
-    if (loggedUser) setUser(loggedUser);
+      if (loggedUser) setUser(loggedUser);
+    } catch (error) {
+      throw error;
+    } finally {
+      setIsLoadingStoredUser(false);
+    }
   };
 
   useEffect(() => {
@@ -49,6 +59,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       value={{
         user,
         signIn,
+        isLoadingStoredUser,
       }}
     >
       {children}
