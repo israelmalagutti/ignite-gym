@@ -18,3 +18,11 @@ export const getAuthToken = async () => {
     throw error;
   }
 };
+
+export const removeAuthToken = async () => {
+  try {
+    await AsyncStorage.removeItem(AUTH_TOKEN_STORAGE);
+  } catch (error) {
+    throw error;
+  }
+};

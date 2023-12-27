@@ -4,7 +4,11 @@ import { UserDTO } from "@dtos/index";
 import { api } from "@services/api";
 
 import { getUser, removeUser, saveUser } from "@storage/storageUser";
-import { getAuthToken, saveAuthToken } from "@storage/storageAuthToken";
+import {
+  getAuthToken,
+  removeAuthToken,
+  saveAuthToken,
+} from "@storage/storageAuthToken";
 
 export type AuthContextDataProps = {
   user: UserDTO;
@@ -25,11 +29,10 @@ export const AuthContext = createContext<AuthContextDataProps>({
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState({} as UserDTO);
-  const [token, setToken] = useState();
 
   const [isLoadingStoredUser, setIsLoadingStoredUser] = useState(true);
 
-  const updateUserAndToken = async (userData: UserDTO, token: string) => {
+  const updateUserAndToken = (userData: UserDTO, token: string) => {
     api.defaults.headers.common.Authorization = `Bearer ${token}`;
 
     setUser(userData);
@@ -65,8 +68,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       setIsLoadingStoredUser(true);
 
-      await removeUser();
       setUser({} as UserDTO);
+
+      await removeUser();
+      await removeAuthToken();
     } catch (error) {
       throw error;
     } finally {
