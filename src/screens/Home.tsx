@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
 
+import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "@routes/app.routes";
 
 import { FlatList, HStack, Heading, Text, VStack } from "native-base";
