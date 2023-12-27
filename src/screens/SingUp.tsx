@@ -23,6 +23,8 @@ import {
 import BackgroundImg from "@assets/background.png";
 import LogoSvg from "@assets/logo.svg";
 import { AppError } from "@utils/AppError";
+import { useState } from "react";
+import { useAuth } from "@hooks/useAuth";
 
 type FormDataProps = {
   name: string;
@@ -52,7 +54,11 @@ const signUpSchema = z
 const TOAST_DURATION_MS = 2500;
 
 export function SignUp() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const Toast = useToast();
+
+  const { signIn } = useAuth();
 
   const { control, handleSubmit, formState } = useForm<FormDataProps>({
     resolver: zodResolver(signUpSchema),
@@ -66,11 +72,15 @@ export function SignUp() {
 
   const handleSignUp = async ({ email, name, password }: FormDataProps) => {
     try {
-      const response = await api.post("/users", { email, name, password });
-      console.log(response);
+      setIsLoading(true);
+
+      await api.post("/users", { email, name, password });
+      await signIn(email, password);
 
       navigation.navigate("signIn");
     } catch (error) {
+      setIsLoading(false);
+
       const isAppError = error instanceof AppError;
       const title = isAppError
         ? error.message
@@ -173,7 +183,11 @@ export function SignUp() {
               )}
             />
 
-            <Button title="Sign up" onPress={handleSubmit(handleSignUp)} />
+            <Button
+              title="Sign up"
+              isLoading={isLoading}
+              onPress={handleSubmit(handleSignUp)}
+            />
           </Box>
         </Center>
 
