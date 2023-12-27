@@ -9,3 +9,12 @@ export const saveAuthToken = async (token: string) => {
     throw error;
   }
 };
+
+export const getAuthToken = async () => {
+  try {
+    const storedToken = await AsyncStorage.getItem(AUTH_TOKEN_STORAGE);
+    return storedToken;
+  } catch (error) {
+    throw error;
+  }
+};
