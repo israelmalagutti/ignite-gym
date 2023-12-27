@@ -24,14 +24,17 @@ export const AuthContext = createContext<AuthContextDataProps>({
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState({} as UserDTO);
+  const [token, setToken] = useState();
+
   const [isLoadingStoredUser, setIsLoadingStoredUser] = useState(true);
 
   const signIn = async (email: string, password: string) => {
     try {
       const { data } = await api.post("/sessions", { email, password });
 
-      if (data.user) {
+      if (data.user && data.token) {
         setUser(data.user);
+
         saveUser(data.user);
       }
     } catch (error) {
