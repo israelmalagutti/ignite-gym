@@ -4,12 +4,13 @@ import {
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
 
-import { Exercise } from "@screens/Exercise";
-import { type Exercise as ExerciseType, Home } from "@screens/Home";
+import { Home } from "@screens/Home";
 import { History } from "@screens/History";
 import { Profile } from "@screens/Profile";
 
-import { View, useTheme } from "native-base";
+import { Exercise } from "@screens/Exercise";
+
+import { useTheme } from "native-base";
 
 // Assets
 import HistorySvg from "@assets/history.svg";
@@ -18,7 +19,7 @@ import ProfileSvg from "@assets/profile.svg";
 
 type AppRoutes = {
   home: undefined;
-  exercise: { exercise: ExerciseType };
+  exercise: { exerciseId: string };
   history: undefined;
   profile: undefined;
 };

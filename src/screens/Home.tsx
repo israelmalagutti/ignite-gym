@@ -29,6 +29,10 @@ export function Home() {
     setActiveGroup(group);
   };
 
+  const handleNavigateExercise = (exerciseId: string) => {
+    navigation.navigate("exercise", { exerciseId });
+  };
+
   const fetchGroups = async () => {
     try {
       const response = await api.get("/groups");
@@ -134,7 +138,7 @@ export function Home() {
             renderItem={({ item: exercise }) => (
               <ExerciseCard
                 data={exercise}
-                onPress={() => navigation.navigate("exercise", { exercise })}
+                onPress={() => handleNavigateExercise(exercise.id)}
               />
             )}
           />
