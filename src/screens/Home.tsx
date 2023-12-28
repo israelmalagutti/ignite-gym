@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "@routes/app.routes";
 
 import { api } from "@services/api";
@@ -48,7 +48,27 @@ export function Home() {
       const isAppError = error instanceof AppError;
       const title = isAppError
         ? error.message
-        : "Sorry, we couldn't contact our servers. Try again later.";
+        : "Sorry, we couldn't list the muscle groups. Try again later.";
+
+      if (isAppError)
+        Toast.show({
+          placement: "top",
+          duration: TOAST_DURATION_MS,
+          title,
+          bg: "red.500",
+        });
+    }
+  };
+
+  const fetchExercisesByGroup = async () => {
+    try {
+      const response = await api.get(`/exercises/bygroup/${activeGroup}`);
+      setExercises(response.data);
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError
+        ? error.message
+        : "Sorry, we couldn't list the exercises for this muscle group. Try again later.";
 
       if (isAppError)
         Toast.show({
@@ -63,6 +83,12 @@ export function Home() {
   useEffect(() => {
     fetchGroups();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchExercisesByGroup();
+    }, [activeGroup])
+  );
 
   return (
     <VStack flex={1}>
@@ -96,7 +122,7 @@ export function Home() {
             Exercises
           </Heading>
           <Text color={"gray.200"} fontSize={"sm"}>
-            {EXERCISES.length}
+            {exercises.length}
           </Text>
         </HStack>
 
@@ -107,7 +133,7 @@ export function Home() {
             px: 8,
             pb: 12,
           }}
-          data={EXERCISES}
+          data={exercises}
           keyExtractor={item => item.name}
           renderItem={({ item: exercise }) => (
             <ExerciseCard
