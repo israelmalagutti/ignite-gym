@@ -1,20 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "@routes/app.routes";
 
-import { FlatList, HStack, Heading, Text, VStack } from "native-base";
-import { ExerciseCard, Group, HomeHeader } from "@components/index";
+import { api } from "@services/api";
 
-type MuscleGroup =
-  | "abs"
-  | "all"
-  | "back"
-  | "biceps"
-  | "chest"
-  | "glutes"
-  | "triceps"
-  | "legs";
+import { AppError } from "@utils/AppError";
+
+import { FlatList, HStack, Heading, Text, VStack, useToast } from "native-base";
+import { ExerciseCard, Group, HomeHeader } from "@components/index";
 
 export type Exercise = {
   name: string;
@@ -23,17 +17,6 @@ export type Exercise = {
   reps: number;
 };
 
-const EXERCISE_TYPES: MuscleGroup[] = [
-  "all",
-  "abs",
-  "back",
-  "biceps",
-  "chest",
-  "glutes",
-  "triceps",
-  "legs",
-];
-
 const EXERCISES: Exercise[] = [
   { name: "Seated cable row", sets: 3, reps: 12 },
   { name: "Dumbbell row", sets: 3, reps: 12 },
@@ -41,14 +24,45 @@ const EXERCISES: Exercise[] = [
   { name: "Barbbell landmine row", sets: 3, reps: 12 },
 ];
 
+const TOAST_DURATION_MS = 2500;
+
 export function Home() {
-  const [activeGroup, setActiveGroup] = useState<MuscleGroup>("all");
+  const [groups, setGroups] = useState<string[]>([]);
+  const [activeGroup, setActiveGroup] = useState("antebraço");
+
+  const [exercises, setExercises] = useState<Exercise[]>([]);
+
+  const Toast = useToast();
 
   const navigation = useNavigation<AppNavigatorRoutesProps>();
 
-  const handleActiveMuscleGroup = (group: MuscleGroup) => {
+  const handleActiveMuscleGroup = (group: string) => {
     setActiveGroup(group);
   };
+
+  const fetchGroups = async () => {
+    try {
+      const response = await api.get("/groups");
+      setGroups(response.data);
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError
+        ? error.message
+        : "Sorry, we couldn't contact our servers. Try again later.";
+
+      if (isAppError)
+        Toast.show({
+          placement: "top",
+          duration: TOAST_DURATION_MS,
+          title,
+          bg: "red.500",
+        });
+    }
+  };
+
+  useEffect(() => {
+    fetchGroups();
+  }, []);
 
   return (
     <VStack flex={1}>
@@ -65,7 +79,7 @@ export function Home() {
           gap: 3,
           px: 8,
         }}
-        data={EXERCISE_TYPES}
+        data={groups}
         keyExtractor={item => item}
         renderItem={({ item }) => (
           <Group
