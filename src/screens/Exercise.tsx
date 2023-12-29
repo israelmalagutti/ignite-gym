@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 
 import { api } from "@services/api";
 import { ExerciseDTO } from "@dtos/ExercsieDTO";
+
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { AppNavigatorRoutesProps } from "@routes/app.routes";
 
 import { AppError } from "@utils/AppError";
 
@@ -29,19 +31,55 @@ type RouteParams = {
   exerciseId: string;
 };
 
-const TOAST_DURATION_MS = 2500;
+const TOAST_DURATION_MS = 5000;
 
 export function Exercise() {
   const [exercise, setExercise] = useState<ExerciseDTO>({} as ExerciseDTO);
+  console.log({ exercise });
+  console.log({ "exercise: ": exercise.demo });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const Toast = useToast();
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<AppNavigatorRoutesProps>();
 
   const route = useRoute();
   const { exerciseId } = route.params as RouteParams;
+
+  const submitExercise = async () => {
+    try {
+      setIsSubmitting(true);
+
+      await api.post("/history", { exercise_id: exerciseId });
+
+      Toast.show({
+        placement: "top",
+        duration: TOAST_DURATION_MS,
+        title:
+          "Congratulations! This exercise has been completed and is available in your history.",
+        bg: "green.700",
+      });
+
+      navigation.navigate("history");
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError
+        ? error.message
+        : "Sorry, we couldn't register this exercise as complete. Try again later.";
+
+      if (isAppError)
+        Toast.show({
+          placement: "top",
+          duration: TOAST_DURATION_MS,
+          title,
+          bg: "red.500",
+        });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const fetchExercise = async () => {
     try {
@@ -107,9 +145,10 @@ export function Exercise() {
           >
             <Box rounded="lg" bg="gray.600" overflow="hidden">
               <Image
+                key={exercise.demo}
                 resizeMode="cover"
                 source={{
-                  uri: `${api.defaults.baseURL}/exercise/demo/${exercise?.demo}`,
+                  uri: `${api.defaults.baseURL}/exercise/demo/${exercise.demo}`,
                 }}
                 alt="Exercise name"
                 _alt={{ color: "gray.100" }}
@@ -139,7 +178,11 @@ export function Exercise() {
                 </HStack>
               </HStack>
 
-              <Button title="Complete exercise"></Button>
+              <Button
+                title="Complete exercise"
+                isLoading={isSubmitting}
+                onPress={submitExercise}
+              ></Button>
             </Box>
           </VStack>
         </ScrollView>
